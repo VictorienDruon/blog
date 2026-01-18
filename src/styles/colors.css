@@ -1,0 +1,29 @@
+:root {
+  --color-gray-1: hsl(0, 0%, 99%);
+  --color-gray-2: hsl(0, 0%, 98%);
+  --color-gray-3: hsl(0, 0%, 94%);
+  --color-gray-4: hsl(0, 0%, 91%);
+  --color-gray-5: hsl(0, 0%, 88%);
+  --color-gray-6: hsl(0, 0%, 85%);
+  --color-gray-7: hsl(0, 0%, 81%);
+  --color-gray-8: hsl(0, 0%, 73%);
+  --color-gray-9: hsl(0, 0%, 55%);
+  --color-gray-10: hsl(0, 0%, 51%);
+  --color-gray-11: hsl(0, 0%, 39%);
+  --color-gray-12: hsl(0, 0%, 13%);
+}
+
+.dark {
+  --color-gray-1: hsl(0, 0%, 7%);
+  --color-gray-2: hsl(0, 0%, 10%);
+  --color-gray-3: hsl(0, 0%, 13%);
+  --color-gray-4: hsl(0, 0%, 16%);
+  --color-gray-5: hsl(0, 0%, 19%);
+  --color-gray-6: hsl(0, 0%, 23%);
+  --color-gray-7: hsl(0, 0%, 28%);
+  --color-gray-8: hsl(0, 0%, 38%);
+  --color-gray-9: hsl(0, 0%, 43%);
+  --color-gray-10: hsl(0, 0%, 48%);
+  --color-gray-11: hsl(0, 0%, 71%);
+  --color-gray-12: hsl(0, 0%, 93%);
+}

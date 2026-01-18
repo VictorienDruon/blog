@@ -1,0 +1,82 @@
+# Ditch TanStack Query, Embrace TanStack DB
+
+The title is a lie. TanStack DB uses TanStack Query under the hood. But it changes what you do with it and that change is significant enough to warrant the provocation.
+
+---
+
+I've been using TanStack Query for years. It's excellent. Caching, deduplication, background refetching, loading states, all handled. For a long time it felt like the complete solution to the data fetching problem.
+
+But I kept running into the same walls.
+
+You fetch a list of todos. You also fetch the lists they belong to. Now you want to display them joined. You either hit a combined endpoint, write a join in the component, or add another query that depends on the first. None of these feel clean. The data lives in separate cache entries and you're assembling it manually in your UI.
+
+Then mutations. You update a todo. The optimistic update touches `queryClient.setQueryData`. You invalidate. You hope the refetch arrives before the user notices the flicker. It usually does. Sometimes it doesn't.
+
+TanStack Query solves the fetching problem. But it hands you back a bag of disconnected data and says: now render something.
+
+---
+
+TanStack DB is the next layer. You still use TanStack Query for the network request. But instead of data living in isolated cache keys, it lives in **collections**, typed, normalized stores that the query engine knows how to query across.
+
+```ts
+const todoCollection = createCollection(
+  queryCollectionOptions({
+    queryKey: ["todos"],
+    queryFn: async () => fetch("/api/todos"),
+    getKey: (item) => item.id,
+    schema: todoSchema,
+    onUpdate: async ({ transaction }) => {
+      const { original, changes } = transaction.mutations[0];
+      await api.todos.update(original.id, changes);
+    },
+  }),
+);
+```
+
+The fetch still happens through TanStack Query. Cache policies, deduplication, background refetching, all of that still works. What changes is where the data lands and what you can do with it.
+
+---
+
+Once data is in collections, you query across them with **live queries**.
+
+```ts
+const { data: todos } = useLiveQuery((q) =>
+  q
+    .from({ todo: todoCollection })
+    .join({ list: listCollection }, ({ todo, list }) => eq(list.id, todo.listId), "inner")
+    .where(({ list }) => eq(list.active, true))
+    .select(({ todo, list }) => ({
+      id: todo.id,
+      text: todo.text,
+      listName: list.name,
+    })),
+);
+```
+
+This is a join across two collections, todos and lists, both populated by their own TanStack Query fetches. No bespoke `/api/todos-with-lists` endpoint. No manual assembly in the component. Just a query.
+
+And it's reactive. When either collection updates, the query result updates incrementally, not by re-running the whole query from scratch. TanStack DB uses differential dataflow under the hood. Updating one row in a 100k-item sorted collection takes ~0.7ms. Optimistic updates feel instant because they are.
+
+---
+
+Optimistic mutations are where the model really pays off.
+
+```ts
+todoCollection.update(todo.id, (draft) => {
+  draft.completed = true;
+});
+```
+
+That's it. No `setQueryData`. No manual cache surgery. The collection overlays the optimistic state on top of the synced data. Live queries see it immediately. When the `onUpdate` handler resolves, the optimistic state is replaced by whatever synced back. If the handler throws, it rolls back.
+
+The interaction path no longer touches the network. The UI is always fast.
+
+---
+
+The thing TanStack Query was never really designed for is this: your data has relationships and your UI reflects those relationships. TanStack Query is great at "fetch this thing and cache it." It was never designed to be a query engine.
+
+TanStack DB is.
+
+You keep your simple REST API. You keep your TanStack Query fetches. You gain cross-collection queries, sub-millisecond reactivity and optimistic mutations that just work.
+
+It's not a replacement. It's what Query was always missing.

@@ -1,0 +1,32 @@
+# My 2026 Stack
+
+I like stacks that stay out of the way. Fast tools, few abstractions and enough flexibility to scale.
+
+This is what I’ll use for most projects in 2026.
+
+## 1. Frontend (Vite + React)
+
+Vite is still the best frontend tooling experience. It’s fast, simple and doesn’t fight you.
+
+For routing, I use **TanStack Router**. File-based routing, code splitting, great typesafety. The API is clean and the context system is excellent.
+
+If I need SSR, I’ll likely use **TanStack Start**.
+
+## 2. Backend (Hono.js)
+
+I don’t love fullstack frameworks. They tend to reduce control and become hard to scale.
+
+Hono is the opposite: small, fast, runtime-agnostic and well designed. The first-party plugins are great and built-in Zod validation is a big win.
+
+## 3. Database (PostgreSQL + Drizzle)
+
+I default to relational databases. Postgres is always a safe choice and extensions like pgvector or PostGIS make it hard to beat.
+
+Drizzle feels like SQL with great TypeScript support. Simple and predictable.
+
+## 4. Libraries I keep using
+
+- **oxlint / oxfmt**: insanely fast, love what the team at [VoidZero](https://voidzero.dev/) is building.
+- **TailwindCSS**: no class naming, no CSS architecture, just shipping UI.
+- **TanStack Query + TanStack DB**: best way I know to build smooth data-driven apps.
+- **Zod**: I always end up needing to validate something, so I just define everything with Zod from the start.

@@ -1,13 +1,42 @@
-@layer reset, base, tokens, recipes, utilities;
+@import "tailwindcss";
+@import "./colors.css";
 
-@font-face {
-	font-family: "UniversTE20L";
-	src: url("/fonts/UniversTE20-Light.woff2") format("woff2");
-	font-display: swap;
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-gray-1: var(--color-gray-1);
+  --color-gray-2: var(--color-gray-2);
+  --color-gray-3: var(--color-gray-3);
+  --color-gray-4: var(--color-gray-4);
+  --color-gray-5: var(--color-gray-5);
+  --color-gray-6: var(--color-gray-6);
+  --color-gray-7: var(--color-gray-7);
+  --color-gray-8: var(--color-gray-8);
+  --color-gray-9: var(--color-gray-9);
+  --color-gray-10: var(--color-gray-10);
+  --color-gray-11: var(--color-gray-11);
+  --color-gray-12: var(--color-gray-12);
+
+  --color-background: var(--color-gray-1);
+  --color-foreground: var(--color-gray-12);
+  --color-subtle: var(--color-gray-2);
+  --color-subtle-foreground: var(--color-gray-10);
+  --color-muted: var(--color-gray-3);
+  --color-muted-foreground: var(--color-gray-11);
+  --color-border: var(--color-gray-6);
+  --color-ring: var(--color-gray-9);
+
+  --font-sans: var(--font-stix-two-text);
+  --font-mono: var(--font-jetbrains-mono);
+
+  --text-base: 17px;
 }
 
-@font-face {
-	font-family: "UniversTE20T";
-	src: url("/fonts/UniversTE20-Thin.woff2") format("woff2");
-	font-display: swap;
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-subtle text-foreground text-base;
+  }
 }

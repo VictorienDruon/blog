@@ -1,0 +1,190 @@
+# pnpm Workspaces
+
+I love monorepos. They’re great to work with and they scale naturally as your codebase grows. **pnpm workspaces** are my go-to. They make local linking seamless, keep dependencies clear and make tooling consistent across packages. Here’s how I structure mine.
+
+---
+
+## 1. Folder structure
+
+I keep **apps** and **libs** separate. Apps consume libs; libs stay reusable. This keeps dependencies clear and scales nicely as the monorepo grows.
+
+- `apps/` → frontend and backend apps (`web`, `api`, etc.)
+- `libs/` → shared packages (`ui`, `sdk`, etc.)
+- Root → contains `package.json` and `pnpm-workspace.yaml`
+
+---
+
+## 2. Configure pnpm workspaces
+
+`pnpm-workspace.yaml`:
+
+```yaml
+packages:
+  - "apps/*"
+  - "libs/*"
+```
+
+Any folder inside `apps/` or `libs/` with a `package.json` becomes a workspace package. pnpm links them locally instead of fetching from npm.
+
+---
+
+## 3. Root package
+
+```json
+{
+  "name": "my-monorepo",
+  "private": true
+}
+```
+
+The root package isn’t published. `"private": true` prevents accidental `pnpm publish` from the root.
+
+---
+
+## 4. Install dependencies
+
+```sh
+pnpm install
+```
+
+Run this once at the root. pnpm installs all dependencies and creates symlinks so local packages resolve to each other.
+
+---
+
+## 5. Create shared packages
+
+Example `libs/sdk/package.json`:
+
+```json
+{
+  "name": "@acme/sdk",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  }
+}
+```
+
+Example `libs/ui/package.json`:
+
+```json
+{
+  "name": "@acme/ui",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "import": "./src/index.ts"
+    }
+  },
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  }
+}
+```
+
+`ui` points directly to `src/` for Just-In-Time compilation, while `sdk` uses a `dist/` build.
+
+---
+
+## 6. Use workspace dependencies
+
+`apps/web/package.json`:
+
+```json
+{
+  "dependencies": {
+    "@acme/sdk": "workspace:*",
+    "@acme/ui": "workspace:*"
+  }
+}
+```
+
+`workspace:*` ensures apps always use the local version. Edit `@acme/ui`, save and your app sees the change immediately.
+
+---
+
+## 7. Install tooling at the root
+
+```sh
+pnpm add --workspace --dev typescript oxlint oxfmt
+```
+
+Shared dev tools live at the root to enforce consistent versions across packages. Individual packages just extend the shared config.
+
+---
+
+## 8. Shared TypeScript config
+
+For the TypeScript configs, I follow the [Total TypeScript tsconfig cheat sheet](https://www.totaltypescript.com/tsconfig-cheat-sheet).
+
+Root `tsconfig.base.json`:
+
+```json
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "noImplicitOverride": true
+  }
+}
+```
+
+Package `tsconfig.json` example (`libs/sdk/tsconfig.json`):
+
+```json
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "NodeNext",
+    "sourceMap": true,
+    "declaration": true,
+    "composite": true,
+    "declarationMap": true,
+    "lib": ["es2022"],
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}
+```
+
+---
+
+## 9. Add scripts
+
+Root `package.json`:
+
+```json
+{
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "oxlint",
+    "fmt": "oxfmt"
+  }
+}
+```
+
+- `-r` runs scripts recursively across all packages.
+- `-F` narrows it to a subset.
+- `dev` runs everything in parallel with hot-reloading, so editing a lib updates any consuming app instantly.

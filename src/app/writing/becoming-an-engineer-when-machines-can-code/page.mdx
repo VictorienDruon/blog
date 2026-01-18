@@ -1,0 +1,49 @@
+# Becoming an Engineer When Machines Can Code
+
+I'm close to graduating. A few months from now I'll have a degree in Computer Science and a few years of apprenticeship behind me. The timing is strange.
+
+---
+
+When I started, the pitch was clear. Learn to think in systems. Learn to decompose problems. Learn the craft. The degree would certify that you could build things and building things had value because most people couldn't.
+
+That story held for a while.
+
+Then, in what felt like a single season, the tools got very good. Not "autocomplete that saves a few keystrokes" good. Actually good. You describe a feature and it appears. You paste an error and it's fixed. You ask for a working implementation of something you only half understood and it comes back clean.
+
+I use these tools every day. I'd be lying if I said I didn't.
+
+---
+
+The unsettling part isn't that AI can write code. It's how fast it went from party trick to something I genuinely rely on. I didn't have time to build an opinion before it was already load-bearing.
+
+My first year of apprenticeship, I was proud of debugging a gnarly async race condition by myself. I traced it through logs, understood the timing, fixed it. That felt like engineering.
+
+Now I'd paste it into Claude and get the fix in thirty seconds. I still understand the fix. But I didn't earn it the same way.
+
+I don't know what to do with that feeling.
+
+---
+
+Some people are panicking. I get it. We chose a field because it seemed stable, creative, well-paid. We spent years learning it. And now the floor feels less certain.
+
+But I think the panic is aimed at the wrong thing.
+
+AI is genuinely good at assembly, taking a known pattern and producing a correct implementation. It's trained on the collective output of every company that already solved a problem like yours. If your problem looks like theirs, it will help a lot.
+
+Most of the interesting problems don't look like theirs. Ask AI to design a system and it reaches for the same stack every time: API gateway, managed queue, Postgres, Redis, S3. It's not wrong exactly, those are reasonable defaults. But it's designing in a vacuum, for a hypothetical average project with no real constraints. It doesn't know your team has two engineers and can't afford to operate a Kafka cluster. It doesn't know you're already locked into a vendor that makes half of its suggestions redundant. It doesn't know that the last time you introduced an async queue into this codebase, it took three months to debug a race condition nobody saw coming.
+
+These decisions happen before any code is written and they determine whether the assembly phase goes smoothly or becomes a months-long slog through technical debt. AI can propose. It can't own.
+
+It can't, because owning requires context it doesn't have: your team's strengths, your company's risk tolerance, what you've already shipped and what it cost you.
+
+---
+
+I've been thinking about what four years of building actually gave me that I can't just prompt for.
+
+The instinct that a certain abstraction will become painful six months from now. The sense that this architecture, technically sound, is going to create a problem you'll spend a year cleaning up. That comes from shipping things that failed, inheriting codebases written at 2am and understanding in your body why certain decisions are a gift to future you and others are a tax. You can't accrue that from a conversation window.
+
+It comes from shipping things that were wrong and staying around long enough to understand why. AI has accelerated the implementation side of engineering faster than it's touched this side, the part that requires accumulated failure.
+
+So I'm not graduating into a world where technical skills don't matter. I'm graduating into one where the technical skills that matter have moved up the stack. Less about whether you can implement the thing, more about whether you understand the space well enough to know what to implement and why.
+
+That's been the hard part all along. It was just obscured by all the syntax around it.
