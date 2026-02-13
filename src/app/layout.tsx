@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   description: "Victorien Druon's blog",
   icons: {
     icon: [
-      { url: "/favicon.ico", sizes: "16x16" },
+      { url: "/favicon.ico", sizes: "32x32" },
       { url: "/icon.svg", type: "image/svg+xml" },
     ],
   },
