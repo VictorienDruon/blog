@@ -1,4 +1,5 @@
 import { JsonLd } from "@/components/JsonLd";
+import { AUTHOR } from "@/utils/constants";
 
 type ArticleJsonLdProps = {
   title: string;
@@ -14,13 +15,9 @@ export const ArticleJsonLd = ({ title, description }: ArticleJsonLdProps) => (
       description,
       author: {
         "@type": "Person",
-        name: "Victorien Druon",
-        url: "https://victorien.druon.xyz",
-        sameAs: [
-          "https://github.com/VictorienDruon",
-          "https://x.com/druon_victorien",
-          "https://linkedin.com/in/victorien-druon",
-        ],
+        name: AUTHOR.name,
+        url: AUTHOR.url,
+        sameAs: [AUTHOR.github, AUTHOR.x, AUTHOR.linkedin],
       },
     }}
   />

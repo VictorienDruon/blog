@@ -8,26 +8,26 @@ import { ThemeProvider } from "next-themes";
 import { JsonLd } from "@/components/JsonLd";
 import { jetBrainsMono, stixTwoText } from "@/styles/fonts";
 import { cn } from "@/utils/cn";
+import { AUTHOR, SITE_URL } from "@/utils/constants";
 
-const url = "https://victorien.druon.xyz";
 const description =
   "Software engineer apprentice based in Paris. Writing about software engineering, web development and building products.";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(url),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: "Victorien Druon",
-    template: "%s — Victorien Druon",
+    default: AUTHOR.name,
+    template: `%s — ${AUTHOR.name}`,
   },
   description,
-  authors: [{ name: "Victorien Druon", url }],
-  creator: "Victorien Druon",
+  authors: [{ name: AUTHOR.name, url: SITE_URL }],
+  creator: AUTHOR.name,
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: url,
-    siteName: "Victorien Druon",
-    title: "Victorien Druon",
+    url: SITE_URL,
+    siteName: AUTHOR.name,
+    title: AUTHOR.name,
     description,
   },
   twitter: {
@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     ],
   },
   alternates: {
-    canonical: url,
+    canonical: SITE_URL,
   },
 };
 
@@ -68,17 +68,13 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
           data={{
             "@context": "https://schema.org",
             "@type": "WebSite",
-            name: "Victorien Druon",
-            url,
+            name: AUTHOR.name,
+            url: SITE_URL,
             author: {
               "@type": "Person",
-              name: "Victorien Druon",
-              url,
-              sameAs: [
-                "https://github.com/VictorienDruon",
-                "https://x.com/druon_victorien",
-                "https://linkedin.com/in/victorien-druon",
-              ],
+              name: AUTHOR.name,
+              url: AUTHOR.url,
+              sameAs: [AUTHOR.github, AUTHOR.x, AUTHOR.linkedin],
             },
           }}
         />
