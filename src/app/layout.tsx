@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: SITE_URL,
   },
+  other: {
+    "google-site-verification": "ZNJN33K01CmPgr8REaTagdB87h45Od-5v0xwZ8vaNCQ",
+  },
 };
 
 const RootLayout = ({ children }: React.PropsWithChildren) => {
