@@ -5,11 +5,11 @@ import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
 import { ThemeProvider } from "next-themes";
 
+import { JsonLd } from "@/components/JsonLd";
 import { jetBrainsMono, stixTwoText } from "@/styles/fonts";
 import { cn } from "@/utils/cn";
 
 const url = "https://victorien.druon.xyz";
-
 const description =
   "Software engineer apprentice based in Paris. Writing about software engineering, web development and building products.";
 
@@ -64,6 +64,24 @@ const RootLayout = ({ children }: React.PropsWithChildren) => {
       suppressHydrationWarning
     >
       <body className="mx-auto max-w-2xl px-8 py-16">
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: "Victorien Druon",
+            url,
+            author: {
+              "@type": "Person",
+              name: "Victorien Druon",
+              url,
+              sameAs: [
+                "https://github.com/VictorienDruon",
+                "https://x.com/druon_victorien",
+                "https://linkedin.com/in/victorien-druon",
+              ],
+            },
+          }}
+        />
         <main className="md:mt-8">
           <ThemeProvider
             attribute="class"
